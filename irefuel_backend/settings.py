@@ -176,8 +176,21 @@ SIMPLE_JWT = {
 }
 
 # CORS Configuration
-CORS_ALLOWED_ORIGINS = config('CORS_ALLOWED_ORIGINS', default='', cast=Csv())
-CORS_ALLOW_ALL_ORIGINS = config('CORS_ALLOW_ALL_ORIGINS', default=False, cast=bool)  # Only for development
+CORS_ALLOW_ALL_ORIGINS = config('CORS_ALLOW_ALL_ORIGINS', default=False, cast=bool)
+
+# Only process CORS_ALLOWED_ORIGINS if CORS_ALLOW_ALL_ORIGINS is False
+if not CORS_ALLOW_ALL_ORIGINS:
+    cors_origins = config('CORS_ALLOWED_ORIGINS', default='', cast=str)
+    if cors_origins:
+        # Split by comma and filter out empty strings and invalid origins
+        CORS_ALLOWED_ORIGINS = [
+            origin.strip() for origin in cors_origins.split(',') 
+            if origin.strip() and ('://' in origin.strip() or origin.strip().startswith('localhost'))
+        ]
+    else:
+        CORS_ALLOWED_ORIGINS = []
+else:
+    CORS_ALLOWED_ORIGINS = []
 
 # Media files (for image uploads)
 MEDIA_URL = config('MEDIA_URL', default='/media/')
