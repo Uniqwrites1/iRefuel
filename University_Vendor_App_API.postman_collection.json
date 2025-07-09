@@ -1,0 +1,407 @@
+{
+  "info": {
+    "name": "University Vendor App API",
+    "description": "Complete API collection for the University Vendor App",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8000/api",
+      "type": "string"
+    },
+    {
+      "key": "access_token",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{access_token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Register User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"john_student\",\n  \"email\": \"john@university.edu\",\n  \"password\": \"testpass123\",\n  \"password_confirm\": \"testpass123\",\n  \"first_name\": \"John\",\n  \"last_name\": \"Doe\",\n  \"user_type\": \"student\",\n  \"phone_number\": \"+1234567890\",\n  \"campus_location\": \"North Campus\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/users/register/",
+              "host": ["{{base_url}}"],
+              "path": ["users", "register", ""]
+            }
+          }
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"john_student\",\n  \"password\": \"testpass123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/users/login/",
+              "host": ["{{base_url}}"],
+              "path": ["users", "login", ""]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    const response = pm.response.json();",
+                  "    pm.collectionVariables.set('access_token', response.access);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Refresh Token",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refresh\": \"your_refresh_token_here\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/token/refresh/",
+              "host": ["{{base_url}}"],
+              "path": ["token", "refresh", ""]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "User Management",
+      "item": [
+        {
+          "name": "Get Profile",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/users/profile/",
+              "host": ["{{base_url}}"],
+              "path": ["users", "profile", ""]
+            }
+          }
+        },
+        {
+          "name": "Update Profile",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"first_name\": \"John Updated\",\n  \"phone_number\": \"+9876543210\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/users/profile/",
+              "host": ["{{base_url}}"],
+              "path": ["users", "profile", ""]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Cafeterias & Menus",
+      "item": [
+        {
+          "name": "List Cafeterias",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/users/cafeterias/",
+              "host": ["{{base_url}}"],
+              "path": ["users", "cafeterias", ""]
+            }
+          }
+        },
+        {
+          "name": "Get Cafeteria Menu",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/users/cafeterias/1/menu/",
+              "host": ["{{base_url}}"],
+              "path": ["users", "cafeterias", "1", "menu", ""]
+            }
+          }
+        },
+        {
+          "name": "Vendor - Get My Cafeteria",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/users/vendor/cafeteria/",
+              "host": ["{{base_url}}"],
+              "path": ["users", "vendor", "cafeteria", ""]
+            }
+          }
+        },
+        {
+          "name": "Vendor - List Menu Items",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/users/vendor/menu-items/",
+              "host": ["{{base_url}}"],
+              "path": ["users", "vendor", "menu-items", ""]
+            }
+          }
+        },
+        {
+          "name": "Vendor - Create Menu Item",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Pepperoni Pizza\",\n  \"description\": \"Classic pepperoni pizza\",\n  \"price\": \"14.99\",\n  \"category\": \"main_course\",\n  \"is_available\": true,\n  \"preparation_time\": 20\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/users/vendor/menu-items/",
+              "host": ["{{base_url}}"],
+              "path": ["users", "vendor", "menu-items", ""]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Orders",
+      "item": [
+        {
+          "name": "Place Order",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"vendor\": 2,\n  \"delivery_address\": \"Dorm Room 301, Building A\",\n  \"special_instructions\": \"Extra cheese, no olives\",\n  \"items\": [\n    {\n      \"menu_item\": 1,\n      \"quantity\": 2,\n      \"special_requests\": \"Extra spicy\"\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/orders/",
+              "host": ["{{base_url}}"],
+              "path": ["orders", ""]
+            }
+          }
+        },
+        {
+          "name": "Get Student Orders",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/orders/student/",
+              "host": ["{{base_url}}"],
+              "path": ["orders", "student", ""]
+            }
+          }
+        },
+        {
+          "name": "Get Vendor Orders",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/orders/vendor/",
+              "host": ["{{base_url}}"],
+              "path": ["orders", "vendor", ""]
+            }
+          }
+        },
+        {
+          "name": "Update Order Status",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"confirmed\",\n  \"estimated_delivery_time\": \"2025-06-26T12:30:00Z\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/orders/1/status/",
+              "host": ["{{base_url}}"],
+              "path": ["orders", "1", "status", ""]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Chat",
+      "item": [
+        {
+          "name": "Send Message",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"receiver\": 2,\n  \"order\": 1,\n  \"message\": \"When will my order be ready?\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/chat/send/",
+              "host": ["{{base_url}}"],
+              "path": ["chat", "send", ""]
+            }
+          }
+        },
+        {
+          "name": "Get Order Messages",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/chat/orders/1/",
+              "host": ["{{base_url}}"],
+              "path": ["chat", "orders", "1", ""]
+            }
+          }
+        },
+        {
+          "name": "Mark Messages as Read",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/chat/orders/1/mark-read/",
+              "host": ["{{base_url}}"],
+              "path": ["chat", "orders", "1", "mark-read", ""]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Delivery",
+      "item": [
+        {
+          "name": "Get Delivery Requests",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/delivery/requests/",
+              "host": ["{{base_url}}"],
+              "path": ["delivery", "requests", ""]
+            }
+          }
+        },
+        {
+          "name": "Accept Delivery Request",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/delivery/requests/1/accept/",
+              "host": ["{{base_url}}"],
+              "path": ["delivery", "requests", "1", "accept", ""]
+            }
+          }
+        },
+        {
+          "name": "Toggle Availability",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/delivery/toggle-availability/",
+              "host": ["{{base_url}}"],
+              "path": ["delivery", "toggle-availability", ""]
+            }
+          }
+        },
+        {
+          "name": "Update Location",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"latitude\": \"40.7128\",\n  \"longitude\": \"-74.0060\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/delivery/update-location/",
+              "host": ["{{base_url}}"],
+              "path": ["delivery", "update-location", ""]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
