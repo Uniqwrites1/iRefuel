@@ -12,3 +12,6 @@ python manage.py collectstatic --noinput
 
 # Run database migrations
 python manage.py migrate
+
+# Create superuser automatically
+python manage.py create_superuser_auto
