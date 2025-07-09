@@ -91,16 +91,26 @@ WSGI_APPLICATION = 'irefuel_backend.wsgi.application'
 
 # Database configuration based on environment
 if config('USE_POSTGRES', default=False, cast=bool):
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': config('DB_NAME'),
-            'USER': config('DB_USER'),
-            'PASSWORD': config('DB_PASSWORD'),
-            'HOST': config('DB_HOST', default='localhost'),
-            'PORT': config('DB_PORT', default='5432'),
+    # Check if DATABASE_URL is provided (easier for deployment)
+    database_url = config('DATABASE_URL', default='')
+    if database_url:
+        # Parse DATABASE_URL
+        import dj_database_url
+        DATABASES = {
+            'default': dj_database_url.parse(database_url)
         }
-    }
+    else:
+        # Use individual environment variables
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.postgresql',
+                'NAME': config('DB_NAME'),
+                'USER': config('DB_USER'),
+                'PASSWORD': config('DB_PASSWORD'),
+                'HOST': config('DB_HOST', default='localhost'),
+                'PORT': config('DB_PORT', default='5432'),
+            }
+        }
 else:
     # For development, using SQLite3
     DATABASES = {
