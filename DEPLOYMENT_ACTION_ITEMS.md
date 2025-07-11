@@ -20,7 +20,7 @@ Go to your web service → Environment tab and add:
 ```
 SECRET_KEY=your-random-50-char-secret-key-here
 DEBUG=False
-ALLOWED_HOSTS=your-app-name.onrender.com
+ALLOWED_HOSTS=irefuel.onrender.com
 DJANGO_SUPERUSER_USERNAME=admin
 DJANGO_SUPERUSER_EMAIL=admin@yourdomain.com
 DJANGO_SUPERUSER_PASSWORD=YourSecurePassword123!
