@@ -207,6 +207,11 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # Static files
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
+# Additional static files directories
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
+
 # Channels Configuration for WebSocket
 ASGI_APPLICATION = 'irefuel_backend.asgi.application'
 

@@ -18,15 +18,26 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from . import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     
     # API endpoints
+    path('api/', views.api_root, name='api_root'),
     path('api/users/', include('users.urls')),
     path('api/orders/', include('orders.urls')),
     path('api/chat/', include('chat.urls')),
     path('api/delivery/', include('delivery.urls')),
+    
+    # Utility endpoints
+    path('api/health/', views.health_check, name='api_health_check'),
+    path('health/', views.health_check, name='health_check'),
+    path('favicon.ico', views.favicon_view, name='favicon'),
+    path('robots.txt', views.robots_txt, name='robots_txt'),
+    
+    # Root redirect to API
+    path('', views.api_root, name='root'),
 ]
 
 # Serve media files during development
