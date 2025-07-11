@@ -1,6 +1,5 @@
 from django.urls import path
 from . import views
-from .views.superuser_views import create_superuser_api
 
 app_name = 'users'
 
@@ -9,9 +8,6 @@ urlpatterns = [
     path('signup/', views.RegisterView.as_view(), name='signup'),
     path('login/', views.login_view, name='login'),
     path('profile/', views.ProfileView.as_view(), name='profile'),
-    
-    # One-time superuser creation (remove after use)
-    path('create-superuser/', create_superuser_api, name='create-superuser'),
     
     # Cafeterias (Student access)
     path('cafeterias/', views.CafeteriaListView.as_view(), name='cafeteria-list'),
