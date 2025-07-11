@@ -40,14 +40,14 @@ Set these environment variables in Render dashboard:
 SECRET_KEY=your-production-secret-key-here
 DEBUG=False
 ALLOWED_HOSTS=your-app-name.onrender.com
-USE_POSTGRES=True
-DB_NAME=your_database_name
-DB_USER=your_database_user
-DB_PASSWORD=your_database_password
-DB_HOST=your_database_host
-DB_PORT=5432
 CORS_ALLOWED_ORIGINS=https://your-frontend-domain.com
 CORS_ALLOW_ALL_ORIGINS=False
+DJANGO_SUPERUSER_USERNAME=admin
+DJANGO_SUPERUSER_EMAIL=admin@example.com
+DJANGO_SUPERUSER_PASSWORD=your-secure-admin-password
+```
+
+**Note:** Render automatically provides `DATABASE_URL` for PostgreSQL databases, so you don't need to set individual database variables (`DB_NAME`, `DB_USER`, etc.).
 ```
 
 ### Optional Variables:

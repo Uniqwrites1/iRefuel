@@ -89,28 +89,26 @@ WSGI_APPLICATION = 'irefuel_backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-# Database configuration based on environment
-if config('USE_POSTGRES', default=False, cast=bool):
-    # Check if DATABASE_URL is provided (easier for deployment)
-    database_url = config('DATABASE_URL', default='')
-    if database_url:
-        # Parse DATABASE_URL
-        import dj_database_url
-        DATABASES = {
-            'default': dj_database_url.parse(database_url)
+# Database configuration - prioritize DATABASE_URL for production deployment
+database_url = config('DATABASE_URL', default='')
+if database_url:
+    # Parse DATABASE_URL (used by Render, Heroku, etc.)
+    import dj_database_url
+    DATABASES = {
+        'default': dj_database_url.parse(database_url)
+    }
+elif config('USE_POSTGRES', default=False, cast=bool) or DEBUG == False:
+    # Use PostgreSQL with individual environment variables
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': config('DB_NAME'),
+            'USER': config('DB_USER'),
+            'PASSWORD': config('DB_PASSWORD'),
+            'HOST': config('DB_HOST', default='localhost'),
+            'PORT': config('DB_PORT', default='5432'),
         }
-    else:
-        # Use individual environment variables
-        DATABASES = {
-            'default': {
-                'ENGINE': 'django.db.backends.postgresql',
-                'NAME': config('DB_NAME'),
-                'USER': config('DB_USER'),
-                'PASSWORD': config('DB_PASSWORD'),
-                'HOST': config('DB_HOST', default='localhost'),
-                'PORT': config('DB_PORT', default='5432'),
-            }
-        }
+    }
 else:
     # For development, using SQLite3
     DATABASES = {
